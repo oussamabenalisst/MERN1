@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import axios from "axios";
 export default function Home() {
   type Product = {
     name: string;
@@ -10,13 +11,14 @@ export default function Home() {
   const [products, Setproducts] = useState<Product[]>([]);
   useEffect(() => {
     const datafetch = async () => {
-      await fetch("/product")
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("test");
-          console.log(data);
-          Setproducts(data);
-        });
+      try {
+        const response = await axios.get<Product[]>(
+          "http://localhost:5000/product"
+        );
+        Setproducts(response.data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
     };
     datafetch();
   }, []);
