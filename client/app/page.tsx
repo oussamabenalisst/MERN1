@@ -1,7 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
 export default function Home() {
-  const [products, Setproducts] = useState([{}]);
+  type Product = {
+    name: string;
+    class: string;
+    pr: number;
+    img: string;
+  };
+  const [products, Setproducts] = useState<Product[]>([]);
   useEffect(() => {
     const datafetch = async () => {
       await fetch("/product")

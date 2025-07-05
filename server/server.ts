@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import mongoose, { Schema, Document } from "mongoose";
+import cors from "cors";
 const Product = require("./src/models/products");
 const app = express();
 app.use(express.json());
@@ -12,8 +13,12 @@ mongoose
     console.log("Error DB Connection");
   });
 const port = 5000;
-
-app.get("/product/", async (req: Request, res: Response) => {
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
+);
+app.get("/product", async (req: Request, res: Response) => {
   try {
     const prd = await Product.find();
     res.json(prd);
