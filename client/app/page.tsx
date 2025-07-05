@@ -12,31 +12,124 @@ export default function Home() {
   useEffect(() => {
     const datafetch = async () => {
       try {
-        const response = await axios.get<Product[]>("/product");
+        const response = await axios.get<Product[]>(
+          "http://localhost:5000/product"
+        );
         Setproducts(response.data);
       } catch (error) {
+        alert(error);
         console.error("Error fetching products:", error);
       }
     };
     datafetch();
   }, []);
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      {products.map((product, index) => {
-        return (
-          <div key={index} className="p-4 border rounded">
-            <p>
-              <strong>Name:</strong> {product.name}
-            </p>
-            <p>
-              <strong>Class:</strong> {product.class}
-            </p>
-            <p>
-              <strong>Price:</strong> {product.pr}
-            </p>
-          </div>
-        );
-      })}
+    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] mt-50">
+      <form className="max-w-md mx-auto p-6 bg-gray-900 border border-gray-700 rounded-lg shadow-md text-gray-200 space-y-4">
+        <h2 className="text-xl font-semibold mb-4 text-center">Add Product</h2>
+
+        <div>
+          <label
+            htmlFor="name"
+            className="block mb-1 text-sm font-medium text-gray-300"
+          >
+            name
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            className="w-full px-4 py-2 rounded-md bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-600"
+          />
+        </div>
+
+        <div>
+          <label
+            htmlFor="prix"
+            className="block mb-1 text-sm font-medium text-gray-300"
+          >
+            prix
+          </label>
+          <input
+            type="number"
+            id="prix"
+            name="prix"
+            className="w-full px-4 py-2 rounded-md bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-600"
+          />
+        </div>
+
+        <div>
+          <label
+            htmlFor="class"
+            className="block mb-1 text-sm font-medium text-gray-300"
+          >
+            class
+          </label>
+          <input
+            type="text"
+            id="class"
+            name="class"
+            className="w-full px-4 py-2 rounded-md bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-600"
+          />
+        </div>
+        <div>
+          <label
+            htmlFor="class"
+            className="block mb-1 text-sm font-medium text-gray-300"
+          >
+            Link IMG
+          </label>
+          <input
+            type="text"
+            id="IMG"
+            name="IMG"
+            className="w-full px-4 py-2 rounded-md bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-600"
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition duration-200"
+        >
+          💾 save
+        </button>
+      </form>
+
+      <table className="min-w-full text-sm rounded-md overflow-hidden shadow-lg border border-gray-700 bg-gray-900 text-gray-200 dark:bg-gray-800 dark:text-gray-200">
+        <thead className="bg-gray-800 dark:bg-gray-700">
+          <tr>
+            <th className="px-6 py-3 font-bold tracking-wide text-left border-b border-gray-700">
+              Name
+            </th>
+            <th className="px-6 py-3 font-bold tracking-wide text-left border-b border-gray-700">
+              Prix
+            </th>
+            <th className="px-6 py-3 font-bold tracking-wide text-left border-b border-gray-700">
+              Class
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {products.map((product, index) => (
+            <tr
+              key={index}
+              className={`${
+                index % 2 === 0 ? "bg-gray-800" : "bg-gray-900"
+              } hover:bg-gray-700 transition duration-200`}
+            >
+              <td className="px-6 py-3 border-b border-gray-700">
+                {product.name}
+              </td>
+              <td className="px-6 py-3 border-b border-gray-700">
+                {product.pr}
+              </td>
+              <td className="px-6 py-3 border-b border-gray-700">
+                {product.class}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
