@@ -31,22 +31,27 @@ export default function Home() {
     if (nom.current && prix.current && qat.current && img.current) {
       if (
         nom.current.value == "" ||
+        nom.current.value.length < 3 ||
+        nom.current.value.length > 50 ||
         prix.current.value == "" ||
         img.current.value == "" ||
         qat.current.value == ""
       ) {
-        alert("vide");
+        alert("vide 3<name<50");
         return;
       }
-      const checkRes = await axios.get("http://localhost:5000/product", {
-        params: {
-          name: nom.current.value,
-        },
-      });
-      if (checkRes.data && checkRes.data.length > 0) {
-        alert("The product is available");
-        return;
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/product/${nom.current.value}`
+        );
+        if (response.data === true) {
+          alert("The product is available");
+          return;
+        }
+      } catch (error) {
+        alert(error);
       }
+
       const prd: Product = {
         name: nom.current.value,
         class: qat.current.value,
@@ -58,12 +63,36 @@ export default function Home() {
         .then(() => {
           alert("Gode");
         })
-        .catch(() => {
-          alert("Error post");
+        .catch((error) => {
+          alert(error);
           return;
         });
       Setproducts([...products, prd]);
     }
+  };
+  const reset = async (name: string) => {
+    if (!name || name == "" || name.length < 3 || name.length > 50) {
+      alert("name vide");
+      return;
+    }
+    try {
+      const response = await axios.get(`http://localhost:5000/product/${nom}`);
+      if (response.data === true) {
+        alert("The product not available");
+        return;
+      }
+    } catch (error) {
+      alert(error);
+    }
+    try {
+      await axios.delete(`http://localhost:5000/product/${name}`);
+      alert("reset " + name + " good");
+    } catch (error) {
+      alert("error reset " + name);
+      alert(error);
+      return;
+    }
+    Setproducts(products.filter((prd) => prd.name !== name));
   };
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] mt-50">
@@ -154,6 +183,9 @@ export default function Home() {
             <th className="px-6 py-3 font-bold tracking-wide text-left border-b border-gray-700">
               Class
             </th>
+            <th className="px-6 py-3 font-bold tracking-wide text-left border-b border-gray-700">
+              Option
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -172,6 +204,15 @@ export default function Home() {
               </td>
               <td className="px-6 py-3 border-b border-gray-700">
                 {product.class}
+              </td>
+              <td className="px-6 py-3 border-b border-gray-700">
+                <button
+                  type="button"
+                  onClick={() => reset(product.name)}
+                  className="px-4 py-2 bg-red-500 hover:bg-red-600 active:bg-red-700 text-white rounded-md shadow-sm transition-colors duration-200"
+                >
+                  Reset
+                </button>
               </td>
             </tr>
           ))}

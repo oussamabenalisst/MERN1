@@ -77,9 +77,13 @@ app.get("/product/:name", async (req: Request, res: Response) => {
         return;
       }
       const prd = await Product.find({ name: name });
-      res.json(prd);
+      if (prd.length > 0) {
+        res.send(true);
+      } else {
+        res.send(false);
+      }
     } catch {
-      res.send("Error");
+      res.status(500).send("Server Error");
     }
   }
 });
