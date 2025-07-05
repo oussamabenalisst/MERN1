@@ -38,12 +38,12 @@ export default function Home() {
         alert("vide");
         return;
       }
-      const ex = await axios.get("http://localhost:5000/product", {
+      const checkRes = await axios.get("http://localhost:5000/product", {
         params: {
           name: nom.current.value,
         },
       });
-      if (Array.isArray(ex.data) && !Array.isArray(ex.data)) {
+      if (checkRes.data && checkRes.data.length > 0) {
         alert("The product is available");
         return;
       }
