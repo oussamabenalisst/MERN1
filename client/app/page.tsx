@@ -69,6 +69,10 @@ export default function Home() {
           return;
         });
       Setproducts([...products, prd]);
+      nom.current.value = "";
+      qat.current.value = "";
+      img.current.value = "";
+      prix.current.value = "";
     }
   };
   const reset = async (name: string) => {
