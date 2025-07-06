@@ -50,6 +50,7 @@ export default function Home() {
         }
       } catch (error) {
         alert(error);
+        return;
       }
 
       const prd: Product = {
