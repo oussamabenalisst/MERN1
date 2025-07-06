@@ -9,6 +9,7 @@ export default function Home() {
     img: string;
   };
   const [products, Setproducts] = useState<Product[]>([]);
+  // ref{}
   const nom = useRef<HTMLInputElement>(null);
   const prix = useRef<HTMLInputElement>(null);
   const qat = useRef<HTMLInputElement>(null);
