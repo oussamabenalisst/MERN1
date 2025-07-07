@@ -13,20 +13,25 @@ export default function Home() {
   const prix = useRef<HTMLInputElement>(null);
   const qat = useRef<HTMLInputElement>(null);
   const img = useRef<HTMLInputElement>(null);
-  useEffect(() => {
-    const datafetch = async () => {
-      try {
-        const response = await axios.get<Product[]>(
-          "http://localhost:5000/product"
-        );
-        Setproducts(response.data);
-      } catch (error) {
-        alert(error);
-        console.error("Error fetching products:", error);
-      }
-    };
-    datafetch();
-  }, []);
+  try {
+    useEffect(() => {
+      const datafetch = async () => {
+        try {
+          const response = await axios.get<Product[]>(
+            "http://localhost:5000/product"
+          );
+          Setproducts(response.data);
+        } catch (error) {
+          alert(error);
+          console.error("Error fetching products:", error);
+          return;
+        }
+      };
+      datafetch();
+    }, []);
+  } catch {
+    alert("mongo Error");
+  }
   const add = async () => {
     if (nom.current && prix.current && qat.current && img.current) {
       if (
