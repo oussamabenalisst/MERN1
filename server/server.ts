@@ -11,6 +11,7 @@ mongoose
   })
   .catch(() => {
     console.log("Error DB Connection");
+    return;
   });
 const port = 5000;
 app.use(
